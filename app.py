@@ -5,6 +5,8 @@ import os
 from datetime import datetime
 import logging
 import subprocess
+# Application version
+__version__ = "1.0.0"
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 
@@ -54,8 +56,17 @@ def index():
     except Exception as e:
         logger.error(f"Error loading logo: {e}")
     
-    return render_template('fuel_form.html', logo_base64=logo_base64)
+    return render_template('fuel_form.html', logo_base64=logo_base64, version=__version__)
 
+
+@app.route('/version')
+def version():
+    """Return application version information"""
+    return jsonify({
+        'version': __version__,
+        'app': 'FuelTime',
+        'organization': 'Obion County Schools'
+    })
 @app.route('/submit', methods=['POST'])
 def submit_form():
     """Process form submission and generate PDF"""

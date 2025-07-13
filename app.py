@@ -6,7 +6,7 @@ from datetime import datetime
 import logging
 import subprocess
 # Application version
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 app = Flask(__name__, static_folder='static', static_url_path='/static')
 

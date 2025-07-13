@@ -1,8 +1,15 @@
+# FuelTime Application - Standalone Deployment
+# 
+# Instructions:
+# 1. Save this file as 'docker-compose.yml'
+# 2. Run: docker-compose up -d
+# 3. Access the app at: http://localhost:5000
+# 4. To stop: docker-compose down
+
 version: '3.8'
 
 services:
-  fueltime-app:
-    image: fueltime:latest
+  fueltime:
     build:
       context: https://github.com/Obion-County-Board-of-Education/FuelTime.git
       dockerfile: Dockerfile
@@ -13,6 +20,7 @@ services:
       - FLASK_ENV=production
       - FLASK_DEBUG=false
     volumes:
+      # Create a local temp directory for PDFs
       - ./temp:/app/temp
     restart: unless-stopped
     healthcheck:
@@ -21,3 +29,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+# Automatically create temp directory
+volumes:
+  temp:

@@ -2,33 +2,101 @@
 
 This repository contains the FuelTime application for Obion County Schools, providing fuel reporting and timesheet management functionality.
 
-## Quick Start with Docker
+## 🚀 Quick Start - Copy & Paste Deployment
 
-### Prerequisites
-- Docker and Docker Compose installed on your system
-- Internet connection to pull the repository
+**The easiest way to deploy FuelTime:**
 
-### Running the Application
-
-1. **Download the production docker-compose file**:
+1. **Create a new directory for your deployment**:
    ```bash
-   curl -O https://raw.githubusercontent.com/Obion-County-Board-of-Education/FuelTime/main/docker-compose.prod.yml
+   mkdir fueltime-app
+   cd fueltime-app
    ```
 
-2. **Start the application**:
-   ```bash
-   docker-compose -f docker-compose.prod.yml up -d
+2. **Create a `docker-compose.yml` file** and copy this content into it:
+
+   ```yaml
+   version: '3.8'
+
+   services:
+     fueltime:
+       build:
+         context: https://github.com/Obion-County-Board-of-Education/FuelTime.git
+         dockerfile: Dockerfile
+       container_name: fueltime-app
+       ports:
+         - "5000:5000"
+       environment:
+         - FLASK_ENV=production
+         - FLASK_DEBUG=false
+       volumes:
+         # Local directory for PDF storage
+         - ./temp:/app/temp
+       restart: unless-stopped
+       healthcheck:
+         test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+         interval: 30s
+         timeout: 10s
+         retries: 3
+         start_period: 40s
    ```
 
-3. **Access the application**:
+3. **Run the application**:
+   ```bash
+   docker-compose up -d
+   ```
+
+4. **Access the application**:
    Open your web browser and navigate to: `http://localhost:5000`
 
-4. **Stop the application**:
+5. **Stop the application**:
    ```bash
-   docker-compose -f docker-compose.prod.yml down
+   docker-compose down
    ```
 
-### Alternative: Clone and Run
+**That's it! 🎉** The application will automatically:
+- Pull the latest code from GitHub
+- Build the Docker image
+- Start the FuelTime application
+- Create a local `temp` folder for PDF storage
+
+## Alternative: One-Command Deploy
+
+If you prefer a single command, create the docker-compose.yml file and run:
+
+```bash
+# Create directory and file in one go
+mkdir fueltime-app && cd fueltime-app && cat > docker-compose.yml << 'EOF'
+version: '3.8'
+
+services:
+  fueltime:
+    build:
+      context: https://github.com/Obion-County-Board-of-Education/FuelTime.git
+      dockerfile: Dockerfile
+    container_name: fueltime-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=false
+    volumes:
+      - ./temp:/app/temp
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+EOF
+
+# Start the application
+docker-compose up -d
+```
+
+## Alternative Deployment Methods
+
+### Method 1: Clone and Run
 
 If you prefer to clone the repository:
 
@@ -43,8 +111,26 @@ If you prefer to clone the repository:
    docker-compose up -d
    ```
 
-3. **Access the application**:
-   Open your web browser and navigate to: `http://localhost:5000`
+### Method 2: Custom Port
+
+To run on a different port, modify the ports section in your docker-compose.yml:
+
+```yaml
+ports:
+  - "8080:5000"  # Use port 8080 instead of 5000
+```
+
+Then access the app at `http://localhost:8080`
+
+## Prerequisites
+
+- Docker and Docker Compose installed on your system
+- Internet connection to pull the repository
+
+### Install Docker (if needed)
+- **Windows/Mac**: [Docker Desktop](https://docs.docker.com/get-docker/)
+- **Ubuntu**: `sudo apt update && sudo apt install docker.io docker-compose`
+- **CentOS/RHEL**: `sudo yum install docker docker-compose`
 
 ## Features
 

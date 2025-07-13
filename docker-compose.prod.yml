@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  fueltime-app:
+    build:
+      context: https://github.com/Obion-County-Board-of-Education/FuelTime.git
+      dockerfile: Dockerfile
+    container_name: fueltime-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=false
+    volumes:
+      - fueltime_temp:/app/temp
+      - fueltime_static:/app/static
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  fueltime_temp:
+    driver: local
+  fueltime_static:
+    driver: local

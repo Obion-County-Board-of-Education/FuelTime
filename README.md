@@ -6,7 +6,7 @@ A web-based application for fuel reporting and timesheet management with profess
 
 ### For Users (Deploy from GitHub)
 
-1. **Create a new directory**:
+1. **Create a new directory** (important - do this outside any existing git repository):
    ```bash
    mkdir fueltime-app
    cd fueltime-app
@@ -58,7 +58,7 @@ A web-based application for fuel reporting and timesheet management with profess
    cd FuelTime
    ```
 
-2. **Start with Docker Compose**:
+2. **Start with Docker Compose** (uses local files):
    ```bash
    docker-compose up --build
    ```

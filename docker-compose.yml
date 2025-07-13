@@ -1,12 +1,10 @@
 services:
   app:
-    build:
-      context: https://github.com/Obion-County-Board-of-Education/FuelTime.git
-      dockerfile: Dockerfile
+    build: .
     ports:
       - "5000:5000"
     environment:
-      - FLASK_ENV=production
+      - FLASK_ENV=development
     volumes:
       - ./temp:/app/temp
     restart: unless-stopped

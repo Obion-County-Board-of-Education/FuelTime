@@ -14,7 +14,6 @@ A web-based application for fuel reporting and timesheet management with profess
 
 2. **Create a `docker-compose.yml` file** with this content:
    ```yaml
-   version: '3.8'
 
    services:
      fueltime:

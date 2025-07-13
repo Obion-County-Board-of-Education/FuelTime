@@ -29,6 +29,7 @@ A web-based application for fuel reporting and timesheet management with profess
        volumes:
          - ./temp:/app/temp
        restart: unless-stopped
+       command: ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "4", "--timeout", "120", "app:app"]
        healthcheck:
          test: ["CMD", "curl", "-f", "http://localhost:5000/"]
          interval: 30s
